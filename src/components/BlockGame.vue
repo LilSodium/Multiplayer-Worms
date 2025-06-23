@@ -6,7 +6,8 @@
             return {
                 socket: {},
                 context: {},
-                players: {}
+                players: {},
+                food: null
             }
         },
         created() {
@@ -30,45 +31,61 @@
         mounted() {
             this.context = this.$refs.game.getContext("2d");
 
-            this.socket.on("updatePlayers", playersData => {
-                this.players = playersData;
-                this.context.clearRect(0, 0, this.$refs.game.width, this.$refs.game.height);
+            // The server will send 'updateState' events continuously via the game loop
+            this.socket.on("updateState", (gameState) => {
+                this.players = gameState.players;
+                this.food = gameState.foodPos;
 
+                // Clear the canvas for the new frame
+                this.context.clearRect(0, 0, this.$refs.game.width, this.$refs.game.height);
+                
+                if(this.food) {
+                    this.context.fillStyle = 'green';
+                    this.context.fillRect(this.food.x, this.food.y, 20, 20)
+                }
+
+                // Loop through every player (worm) in the game state
                 for (const id in this.players) {
                     const player = this.players[id];
+                    
+                    // Set the color for this specific worm
                     this.context.fillStyle = player.color;
-                    this.context.fillRect(player.x, player.y, 20, 20);
+                    
+                    // Loop through the worm's body segments and draw each one
+                    for (const segment of player.segments) {
+                        this.context.fillRect(segment.x, segment.y, 20, 20);
+                    }
                 }
             });
+            // Add keyboard controls for a better feel
+            window.addEventListener('keydown', this.handleKeydown);
+        },
 
-            //Set up the listener for key presses
-            console.log('Component mounted. Adding global key listener.');
-            window.addEventListener('keydown', this.KeyPress);
+        // clean up listeners when the component is destroyed
+        beforeUnmount() {
+            window.removeEventListener('keydown', this.handleKeydown);
         },
         methods: {
-            KeyPress(event) {
-                console.log(`Key pressed: ${event.key}`);
-                
-                switch (event.key) {
-                    case 'w': 
-                    case 'W':
-                    case 'ArrowUp':
-                        this.socket.emit("move", "up");
+            move(direction) {
+                this.socket.emit("move", direction);
+            },
+            handleKeydown(e) {
+                switch(e.key) {
+                    case "ArrowUp":
+                    case "w":
+                        this.move('up');
                         break;
-                    case 's':
-                    case 'S':
-                    case 'ArrowDown':
-                        this.socket.emit("move", "down");
+                    case "ArrowDown":
+                    case "s":
+                        this.move('down');
                         break;
-                    case 'a':
-                    case 'A':
-                    case 'ArrowLeft':
-                        this.socket.emit("move", "left");
+                    case "ArrowLeft":
+                    case "a":
+                        this.move('left');
                         break;
-                    case 'd':
-                    case 'D':
-                    case 'ArrowRight':
-                        this.socket.emit("move", "right");
+                    case "ArrowRight":
+                    case "d":
+                        this.move('right');
                         break;
                 }
             }
@@ -84,6 +101,9 @@
         height="480"
         style="border: 2px solid black;">
         </canvas>
+        <p style="text-align: center; font-family: sans-serif;">
+            Use Arrow Keys or WASD to move.
+        </p>
     </div>
 </template>
 

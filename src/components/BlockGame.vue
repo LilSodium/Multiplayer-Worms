@@ -94,7 +94,7 @@
 </script>
 
 <template>
-    <div>
+    <div style="background-color:lightgray; min-height: 100vh;">
         <canvas 
         ref="game" 
         width="640" 

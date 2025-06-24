@@ -7,7 +7,9 @@
                 socket: {},
                 context: {},
                 players: {},
-                food: null
+                food: null,
+                CANVAS_WIDTH: 640,
+                CANVAS_HEIGHT: 480
             }
         },
         created() {
@@ -38,10 +40,19 @@
 
                 // Clear the canvas for the new frame
                 this.context.clearRect(0, 0, this.$refs.game.width, this.$refs.game.height);
-                
+                // Canvas Grid
+                for(let i = 0; i < this.CANVAS_WIDTH / 20; i++ ) {
+                    for(let j = 0; j < this.CANVAS_HEIGHT / 20; j++) {
+                        this.context.strokeStyle = '#c2c2c2';
+                        this.context.strokeRect(i * 20, j * 20, 20, 20)
+                    }
+                }
+                // Draw worms
                 if(this.food) {
                     this.context.fillStyle = 'green';
+                    this.context.strokeStyle = 'black';
                     this.context.fillRect(this.food.x, this.food.y, 20, 20)
+                    this.context.strokeRect(this.food.x, this.food.y, 20, 20)
                 }
 
                 // Loop through every player (worm) in the game state
@@ -54,6 +65,7 @@
                     // Loop through the worm's body segments and draw each one
                     for (const segment of player.segments) {
                         this.context.fillRect(segment.x, segment.y, 20, 20);
+                        this.context.strokeRect(segment.x, segment.y, 20, 20);
                     }
                 }
             });
@@ -94,11 +106,11 @@
 </script>
 
 <template>
-    <div style="background-color:lightgray; min-height: 100vh;">
+    <div style="background-color: lightgray; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <canvas 
         ref="game" 
-        width="640" 
-        height="480"
+        :width="CANVAS_WIDTH"
+        :height="CANVAS_HEIGHT"
         style="border: 2px solid black;">
         </canvas>
         <p style="text-align: center; font-family: sans-serif;">

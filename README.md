@@ -1,7 +1,7 @@
-# Multiplayer Worms 🪱
+# Multiplayer Worms 🕹️
 Hello and welcome to my worms multiplayer project. As the name implies, this is simply worms, but with multiplayer!
 
-It's a browser-based, built with Vue for the front-end and Node.js with Socket.IO for the back-end that way we have real-time communication.
+It's a browser-based, built with Vue for the front-end and Node.js with Socket.IO for the back-end so we have real-time communication.
 
 The back-end server sleeps after long periods of inactivity. So just give it a minte to wake-up if the buttons aren't responding. 
 

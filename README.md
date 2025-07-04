@@ -11,8 +11,6 @@ Enjoy.
 
 ## 🚀 Play the game
 
-- **Front-End (GitHub Pages):** [Play the Game](https://lilsodium.github.io/Multiplayer-Worms)
-- **Back-End (Render):** [Server Status](https://multiplayer-worms.onrender.com)
-
+[Play the Game](https://lilsodium.github.io/Multiplayer-Worms)
 ---
 

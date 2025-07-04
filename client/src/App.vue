@@ -6,7 +6,7 @@ import BlockGame from './components/BlockGame.vue';
 import GameLobby from './components/GameLobby.vue';
 import io from "socket.io-client";
 import { store } from '@/store'
-
+import io from "socket.io-client";
 export default {
   name: 'App',
   components: {
@@ -19,18 +19,16 @@ export default {
 
   data() {
     return {
-      // The initial view when the app loads is 'main-menu'
-      socket: null, // our single socket connection, to be shared between components
+      socket: null, 
       currentView: 'main-menu', 
       lobbyInfo: {}, // To store room/password info later
-      store: store
+      store: store // To store stuff in browser
     };
   },
 
   created(){
     // Create the socket connection once when the app starts
-  this.socket = io("http://localhost:3000");
-
+    this.socket = io("https://multiplayer-worms-server.onrender.com");
   
     this.socket.on('setToken', id => {
       store.playerToken = id;

@@ -18,16 +18,18 @@ export default {
 
   data() {
     return {
-      socket: null, 
+      // The initial view when the app loads is 'main-menu'
+      socket: null, // our single socket connection, to be shared between components
       currentView: 'main-menu', 
       lobbyInfo: {}, // To store room/password info later
-      store: store // To store stuff in browser
+      store: store
     };
   },
 
   created(){
     // Create the socket connection once when the app starts
-    this.socket = io("https://multiplayer-worms-server.onrender.com");
+    this.socket = io("http://localhost:3000");
+
   
     this.socket.on('setToken', id => {
       store.playerToken = id;

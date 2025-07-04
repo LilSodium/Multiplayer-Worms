@@ -1,24 +1,13 @@
-# client
+# Multiplayer Worms 🪱
 
-## Project setup
-```
-npm install
-```
+A browser-based multiplayer worm game built with Vue and Node.js using Socket.IO for real-time communication.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+---
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 🪱 Live Demo
 
-### Lints and fixes files
-```
-npm run lint
-```
+- **Front-End (GitHub Pages):** [Play the Game](https://lilsodium.github.io/Multiplayer-Worms)
+- **Back-End (Render):** [Server Status](https://multiplayer-worms.onrender.com)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+---
+

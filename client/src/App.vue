@@ -28,7 +28,7 @@ export default {
 
   created(){
     // Create the socket connection once when the app starts
-    this.socket = io("https://your-backend-name.onrender.com");
+    this.socket = io("https://multiplayer-worms.onrender.com");
 
   
     this.socket.on('setToken', id => {

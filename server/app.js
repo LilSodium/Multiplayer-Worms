@@ -5,6 +5,7 @@ const { randomUUID } = require("crypto");
 const Socketio = require("socket.io")(Http, {
     cors: { origin: "*" }
 });
+const PORT = process.env.PORT || 3000;
 
 // --- Game Constants ---
 const CANVAS_WIDTH = 640;
@@ -344,6 +345,6 @@ Socketio.on("connection", socket => {
 
 });
 
-Http.listen(3000, () => {
-    console.log("Listening at :3000...");
-});
+Http.listen(PORT, () => {
+    console.log(`Listening at :${PORT}...`);
+  });

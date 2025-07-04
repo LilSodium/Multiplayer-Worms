@@ -1,6 +1,4 @@
 {
   "dependencies": {
-    "@ckpack/vue-color": "^1.6.0",
-    "bcrypt": "^6.0.0"
   }
 }

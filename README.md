@@ -9,8 +9,6 @@ Enjoy.
 
 ---
 
-## 🚀 Play the game
-
-# [Play the Game](https://lilsodium.github.io/Multiplayer-Worms)
+## 🚀 [Play the Game](https://lilsodium.github.io/Multiplayer-Worms)
 ---
 

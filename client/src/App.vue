@@ -6,7 +6,6 @@ import BlockGame from './components/BlockGame.vue';
 import GameLobby from './components/GameLobby.vue';
 import io from "socket.io-client";
 import { store } from '@/store'
-import io from "socket.io-client";
 export default {
   name: 'App',
   components: {

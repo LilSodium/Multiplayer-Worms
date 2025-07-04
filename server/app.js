@@ -1,5 +1,4 @@
 const Express = require("express")();
-const bcrypt = require('bcrypt');
 const Http = require("http").Server(Express);
 const { randomUUID } = require("crypto");
 const Socketio = require("socket.io")(Http, {

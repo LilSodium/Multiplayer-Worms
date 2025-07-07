@@ -1,24 +1,8 @@
-# client
+# Multiplayer Worms
 
-## Project setup
-```
-npm install
-```
+Welcome to my browser-based multiplayer worms game. This project was built with Vue.js on the front-end and a Node.js/Socket.IO backend. 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Use the arrow keys or WASD to move. The grows the largest wins
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#[Play the game](https://multiplayer-worms.onrender.com)

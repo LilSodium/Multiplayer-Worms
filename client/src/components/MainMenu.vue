@@ -54,7 +54,11 @@
             transition: background-color 0.2s;
         }
         button:hover {
-            background-color: #36a374;
+            background-color: #4ac690;
+        }
+
+        button:active {
+            background-color: #33946a;
         }
     </style>
     

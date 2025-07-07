@@ -45,7 +45,7 @@ export default {
             <input v-model="playerName" type="text" placeholder="Player Name" />
             <input v-model="roomName" type="text" placeholder="Room Name" required />
             <input v-model="password" type="password" placeholder="Password" />
-            <button type="submit">Join Game</button>
+            <button type="submit" class="join-button">Join Game</button>
             <button type="button" class="back-button" @click="$emit('back')">Back</button>
             <p>{{ msg }}</p>
         </form>
@@ -90,4 +90,24 @@ export default {
     .back-button {
         background-color: #777;
     }
+    .back-button {
+        background-color: #777;
+    }
+
+    .back-button:hover {
+        background-color: #7f7f7f;
+    }
+
+    .back-button:active {
+        background-color: #696969;
+    }
+
+    .join-button:hover {
+        background-color: #74cc84;
+    }
+
+    .join-button:active {
+        background-color: #52a062;
+    }
+
 </style>

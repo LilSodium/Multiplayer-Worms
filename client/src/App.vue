@@ -27,6 +27,7 @@ export default {
   },
 
   created(){
+    // Change to https://multiplayer-worms.onrender.com
     // Create the socket connection once when the app starts
     this.socket = io("http://localhost:3000");
 
@@ -101,6 +102,7 @@ export default {
       v-else-if="currentView === 'in-game'"
       :socket="socket"
       :settings="lobbyInfo"
+      :store="store"
       @back="returnToMenu"
     />
 
@@ -129,4 +131,5 @@ export default {
   #app {
     color: #2c3e50;
   }
+  
 </style>

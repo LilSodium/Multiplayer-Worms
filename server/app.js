@@ -2,6 +2,7 @@ const Express = require("express")();
 const bcrypt = require('bcrypt');
 const Http = require("http").Server(Express);
 const { randomUUID } = require("crypto");
+const { Socket } = require("socket.io");
 const Socketio = require("socket.io")(Http, {
     cors: { origin: "*" }
 });
@@ -39,7 +40,7 @@ function hasCollision(head, player, room) {
 }
 
 function createPlayer(socketId, playerName = '') {
-    playerId = randomUUID()
+    const playerId = randomUUID()
     
     console.log(`Player created: ${playerId}`);
     return {
@@ -105,11 +106,13 @@ function onTimerTick() {
             } 
             const everyoneDead = roomPlayers.every(player => player.alive === false);
             if(everyoneDead) {
-                room.active = false;
+                Socketio.to(roomId).emit('playAgain');
 
 
                 setTimeout(() => {
                 // Kick them so they dont stay and break the server by making it process undefined data.
+                if (room.active === true) return;
+                room.active = false;
                 Socketio.to(roomId).emit('kickPlayer');
                 Socketio.socketsLeave(roomId);
                 console.log(`Lobby game deleted ${roomId}`)
@@ -135,7 +138,7 @@ function onTimerTick() {
             }
         }
         // After updating all players, broadcast the new state to the players in the room.
-         Socketio.to(roomId).emit("updateState", {players: roomPlayers, foodPos: room.food, active: room.active})
+        Socketio.to(roomId).emit("updateState", room );
     } 
 }
 
@@ -282,6 +285,31 @@ Socketio.on("connection", socket => {
         rooms[roomId].active = true;
         console.log(`Lobby started game: ${roomId}`)
     })
+
+    // --- Play Again ---
+    socket.on('playAgain', data => {
+        const room = rooms[data.id];
+        if(!room) return;
+
+        room.active = true;
+        spawnFood(room);
+
+    // Reset every player in the room
+    for (const player of room.players) {
+        player.alive = true;
+        player.direction = 'none'; // Reset direction to stop them from moving instantly
+        player.segments = [ // 2. Assign an ARRAY with the new single segment
+            {
+                x: Math.floor(Math.random() * (CANVAS_WIDTH / SEGMENT_SIZE)) * SEGMENT_SIZE,
+                y: Math.floor(Math.random() * (CANVAS_HEIGHT / SEGMENT_SIZE)) * SEGMENT_SIZE,
+            }
+        ];
+    }
+    console.log(`Room ${room.id} has been reset for Play Again.`);
+
+    Socketio.to(room.id).emit("updateState", room);
+    });
+    
 
     socket.on("disconnect", () => {
         if (!playerId) {

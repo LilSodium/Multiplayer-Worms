@@ -26,8 +26,8 @@ export default {
             context: {},
             players: {},
             food: null,
+            hostId: null,
 
-            isActive: true,
             playerDead: false,
             kickTimer: null,
             currentDirection: 'none',
@@ -51,6 +51,15 @@ export default {
                     score: player.segments.length
                 }))
             .sort((a, b) => b.score - a.score);
+        },
+        everyoneDead(){ 
+            const playerArray = Object.values(this.players);
+
+            if(playerArray.length === 0) {
+                return false;
+            }
+
+            return playerArray.every(p => !p.alive)
         }
     },
     mounted() {
@@ -59,14 +68,16 @@ export default {
 
         this.socket.on('kickPlayer', () => {
             this.$emit('back');
-        }); 
+        });
         
-
+        console.log(this.hostId, this.store.playerToken);
+        
+        
         // The server will send 'updateState' events continuously via the game loop
-        this.socket.on("updateState", (gameState) => {
-            this.players = gameState.players;
-            this.food = gameState.foodPos;
-            this.isActive = gameState.active;
+        this.socket.on("updateState", (room) => {
+            this.players = room.players;
+            this.food = room.food;
+            this.hostId = room.hostId;
 
             // Clear the canvas for the new frame
             this.context.clearRect(0, 0, this.$refs.game.width, this.$refs.game.height);
@@ -113,11 +124,8 @@ export default {
             if (currPlayer && currPlayer.alive === false) {
                 this.playerDead = true;
             }
-        });
-        // Listen for a reconnect
-        this.socket.on('connect', () => {
-            if (this.store.playerToken) {
-                this.socket.emit('reconnectPlayer', { oldPlayerId: this.store.playerToken });
+            else {
+                this.playerDead = false;
             }
         });
     },
@@ -127,6 +135,7 @@ export default {
         window.removeEventListener('keydown', this.handleKeydown);
         this.socket.off("updateState");
         this.socket.off('kickPlayer');
+        this.socket.off('playAgain');
     },
     methods: {
         handleKeydown(e) {
@@ -157,6 +166,9 @@ export default {
         handleBack() {
             this.$emit('back');
             this.socket.emit('leaveRoom', {id: this.settings.id});
+        },
+        handlePlayAgain() {
+            this.socket.emit('playAgain', this.settings);
         }
     }
 }
@@ -170,16 +182,17 @@ export default {
             <div id="loser-overlay-content">
                 <h2>Game Over</h2>
                 <div class="leaderboard-wrapper">
-                    <GameLeaderboard :scores="leaderboard" :isActive="isActive" />
-                    <span v-if="!isActive" id="winner">{{ leaderboard[0].playerName }} wins! </span> 
+                    <GameLeaderboard :scores="leaderboard" :everyoneDead="everyoneDead" />
+                    <span v-if="everyoneDead" id="winner">{{ leaderboard[0].playerName }} wins! </span> 
                 </div>
                 
                 <button class="play-again-button" @click="handleBack" >Main menu</button>
+                <button v-if="everyoneDead && hostId === store.playerToken" class="play-again-button" @click="handlePlayAgain" >Play again </button>
             </div>
         </div>
 
         <!-- The main canvas -->
-            <GameLeaderboard :scores="leaderboard" :isActive="isActive"/>
+            <GameLeaderboard :scores="leaderboard" :everyoneDead="everyoneDead"/>
             <canvas ref="game" :width="CANVAS_WIDTH" :height="CANVAS_HEIGHT"></canvas>
         <!-- Instructions, hidden when game is over -->
         <p v-if="!playerDead" class="instructions">
@@ -244,7 +257,8 @@ export default {
     .play-again-button { 
         font-family: 'Press Start 2P', cursive;
         margin-top: 1.5rem;
-        padding: 1rem 2rem;
+        margin-left: 1.5rem;
+        padding: 1em 2rem;
         font-size: 1rem;
         color: white;
         background-color: #2f9e44;

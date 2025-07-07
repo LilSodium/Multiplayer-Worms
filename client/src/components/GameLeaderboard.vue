@@ -7,7 +7,7 @@ props: {
         type: Array,
         required: true
         },
-    isActive: {
+    everyoneDead: {
         type: Boolean,
         required: true
     }
@@ -21,7 +21,7 @@ props: {
     <h2>Leaderboard</h2>
     <ol class ="leaderboard-list">
         <!-- loop through the 'scores' array and display each item  -->
-        <li v-for="(player, index) in scores" :key="player.id" :class="{ 'top-player': index === 0 && !isActive }">
+        <li v-for="(player, index) in scores" :key="player.id" :class="{ 'top-player': index === 0 && everyoneDead}">
 
             <span class="rank">{{ index + 1 }}</span>        
 

@@ -27,9 +27,9 @@ export default {
   },
 
   created(){
-    // Change to https://multiplayer-worms.onrender.com
+    // Render URL: https://multiplayer-worms.onrender.com
     // Create the socket connection once when the app starts
-    this.socket = io("http://localhost:3000");
+    this.socket = io("https://multiplayer-worms.onrender.com");
 
   
     this.socket.on('setToken', id => {

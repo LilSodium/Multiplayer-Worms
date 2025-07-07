@@ -298,6 +298,7 @@ Socketio.on("connection", socket => {
     for (const player of room.players) {
         player.alive = true;
         player.direction = 'none'; // Reset direction to stop them from moving instantly
+        player.hasTurned = false;
         player.segments = [ // 2. Assign an ARRAY with the new single segment
             {
                 x: Math.floor(Math.random() * (CANVAS_WIDTH / SEGMENT_SIZE)) * SEGMENT_SIZE,

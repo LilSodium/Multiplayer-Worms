@@ -1,8 +1,7 @@
 # Multiplayer Worms
 
-Welcome to my browser-based multiplayer worms game. This project was built with Vue.js on the front-end and a Node.js/Socket.IO backend. 
+Welcome to my browser-based multiplayer worms game. The front-end was built with Vue.js 3 and the back-end was made with Node.js/Socket.IO. The Render server does sleep after long periods of inactivity, so if the join/host buttons aren't responding just try waiting a minute for the server to wakeup. It's of course possible to play alone, but it's far more fun playing with friends.
 
-Use the arrow keys or WASD to move. The grows the largest wins
+Grow the largest out of all the other worms to win. Enjoy.
 
-
-#[Play the game](https://multiplayer-worms.onrender.com)
+# <a href="https://lilsodium.github.io/Multiplayer-Worms/" style="font-size: 24;"> 🚀Play here</a>
